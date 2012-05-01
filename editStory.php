@@ -71,7 +71,7 @@ function retrieveRecords()
 	//craft query for story table
 	$sqlStory = "SELECT fld_storyName FROM table_story WHERE pk_story_storyid = '$id'";
 	//craft query for the text table
-	$sqlText = "SELECT fld_texts_textblock FROM table_texts WHERE fk_story_storyid = '$id'";
+	$sqlText = "SELECT * FROM table_texts WHERE fk_story_storyid = '$id'";
 	//craft query for the photo table
 	$sqlPhoto = "SELECT fld_photos_photopath FROM table_photos WHERE fk_story_storyid = '$id'";
 
@@ -84,36 +84,24 @@ function retrieveRecords()
 	$storyArray = mysql_fetch_array($storyResult);
 	$storyName = $storyArray[0];
 
-	//create string from storyarray, using character & as a delimeter
+	//create string from storyarray, then print it wrapped in editable tags
 	$textString = "";
-
+	$textId = "";
 	while($row = mysql_fetch_array($textResult))
 	{
-			//echo $row['fld_texts_textblock'] . "&";
-			$textString .= $row['fld_texts_textblock'] . "&";
+		//$textId = $row['pk_texts_textid'];
+		//echo '<p><span class="editable">Text Block: </span><div id="'. "textBlock" . $textId .'" class ="edit_area">' . $row['fld_texts_textblock'] . '</div><!-- end firstName --></p>';
+		echo '<p><span class="editable">Text Block: </span><div id='. '"' . $row['pk_texts_textid'] . '"' . ' class ="edit_area">' . $row['fld_texts_textblock'] . '</div><!-- end firstName --></p>';
 	}
 
-	//create string from photoResult, using character & as a delimeter
+	/*
+	//create string from photoResult, then print it wrapped in editable tags
 	$photoString = "";
 	while($row = mysql_fetch_array($photoResult))
-	{
-		//echo $row['fld_photos_photopath'] . "&";
-		$photoString .= $row['fld_photos_photopath'] . "&";
+	{		
+		echo '<p><span class="editable">Photo File: </span><div id="firstName" class ="edit">' . $row['fld_photos_photopath'] . '</div><!-- end firstName --></p>';
 	}
-
-	echo "<p>herp</p>";
-
-	//THIS is what must be output (or at least the format) for the editable regions:
-	// <div class ="items">
-	// 	<p><span class="editable">First Name: </span><div id="firstName" class ="edit">' . $resultArray[0] . '</div><!-- end firstName --></p>
-	// 	<p><span class="editable">Last Name: </span><div id="lastName" class ="edit">' . $resultArray[1] . ' </div><!-- end lastName --></p>
-	// 	<p><span class="editable">Email Address: </span><div id="email" class ="edit">' . $resultArray[3] . ' </div><!-- end email --></p>
-	// 	<p><span class="editable">Bio: </span><div id="bio" class ="edit_area">' . $resultArray[4] . ' </div><!-- end bio --></p>			
-	// </div><!-- end items -->
-
-	//need to use JSON to pass php variables to javascript
-	//http://stackoverflow.com/questions/4885737/pass-php-array-to-javascript-function
-	//echo '<script type="text/javascript"> storyTitle = new RetrievedStory("'. $storyName . ',' . $textString . ',' . $photoString . '")</script>';
+	*/
 }
 
 /**
@@ -153,7 +141,7 @@ function retrieveRecords()
 		$(document).ready(function() 
 		{    
 			//single line area
-			$('.edit').editable('scripts/save.php', {
+			$('.edit').editable('scripts/updateTexts.php', {
 				indicator : 'Saving...',
 				tooltip   : 'Click to edit...',
 				cancel    : 'Cancel',
@@ -161,7 +149,7 @@ function retrieveRecords()
 			});
 
 			//text area edit
-			$('.edit_area').editable('scripts/save.php', { 
+			$('.edit_area').editable('scripts/updateTexts.php', { 
 			     type      : 'textarea',
 		         cancel    : 'Cancel',
 		         submit    : 'OK',
@@ -209,11 +197,13 @@ function retrieveRecords()
 
 					<div id ="storyBrowser">
 
-						<?php
-							//call the function to display the data from the database, formatted in editable regions. 
-							retrieveRecords(); 
-						?>
-						
+						<div class="items" style="height:auto;">
+							<?php
+								//call the function to display the data from the database, formatted in editable regions. 
+								retrieveRecords(); 
+							?>
+						</div><!-- end items -->
+
 					</div><!-- end storyBrowser-->
 					
 				</div><!-- end mainContent -->
