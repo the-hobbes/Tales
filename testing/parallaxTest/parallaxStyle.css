@@ -1,0 +1,152 @@
+@charset "UTF-8";
+ 
+/* GENERAL and CLEANUP */
+* 
+{ 
+	margin: 0px; 
+	padding: 0px; 
+}
+
+img 
+{ 
+	border: 0px; 
+	vertical-align: bottom; 
+}
+
+body 
+{ 
+	background-color: #fff; 
+	font-size: 14px; 
+	font-family: Monaco, Courier, monospace; 
+}
+ 
+/* PARALLAXER */
+ul#panelControl 
+{ 
+	position: fixed; 
+	top: 13px; 
+	left: 70px; 
+	z-index: 999; 
+}
+
+ul#panelControl li 
+{ 
+	float: left; 
+	display: block; 
+	padding-right: 3px; 
+}
+        
+ul#panelControl li a 
+{ 
+	display: block; 
+	border-radius: 20px; 
+	background-color: #000; 
+	color: #fff; 
+	width: 26px; 
+	height: 26px; 
+	text-align: center; 
+	font-size: 20px; 
+	line-height: 22px; 
+	text-decoration: none;
+}
+        
+ul#panelControl li a.clicked 
+{ 
+	opacity: 0.3; 
+	filter:alpha(opacity=30); 
+}
+        
+ul#panelControl li a:hover 
+{ 
+	text-decoration: none; 
+	opacity: 1; filter:alpha(opacity=100); 
+	background-color: #fff; 
+	color: #000; 
+	box-shadow: 0px 5px 5px #000; 
+}
+        
+ul#panelControl li a span 
+{ 
+	display: block; 
+	padding-top: 2px; 
+}
+ 
+#overflowControl 
+{ 
+	overflow: hidden; 
+	position: relative; 
+	height: 620px; 
+	top: 90px; 
+}
+#layerSling 
+{
+	
+}
+
+#layerSling>div 
+{ 
+	display: block; 
+	position: absolute; 
+	top: 0px; 
+	left: 0;  
+}
+ 
+#layerSling .p 
+{ 
+	height: 400px; 
+	float: left; 
+	position: relative; 
+	overflow: visible; 
+	text-align: center; 
+}
+
+#layerSling .p img 
+{ 
+	display: block; 
+	position: absolute; 
+	top: 0; 
+	left: 0; 
+}
+        
+#layerB .p 
+{ 
+	width: 400px; 
+}
+        
+#layerB .p .narrative 
+{ 
+	position: absolute; 
+	top: 400px; 
+	left: 0; 
+	width: 360px; 
+	padding: 20px; 
+	text-align: left; 
+}
+ 
+/* FLAIR */
+#layerA .p 
+{ 
+	box-shadow: inset 5px -50px 40px rgba(218, 74, 141, 0.9); 
+	color: #942a5c; 
+}
+#layerB .p 
+{ 
+	box-shadow: inset 5px -40px 40px rgba(187, 135, 197, 0.9); 
+	color: #86578f; 
+}
+#layerC .p 
+{ 
+	box-shadow: inset 5px -30px 40px rgba(165, 166, 216, 0.9); 
+	color: #696aae; 
+}
+#layerD .p 
+{ 
+	box-shadow: inset 5px -20px 40px rgba(154, 206, 241, 0.9); 
+	color: #4ca1d9; 
+}
+#layerE .p 
+{ 
+	box-shadow: inset 5px -10px 40px rgba(153, 227, 255, 0.9); 
+	color: #3dc3f5; 
+}
+

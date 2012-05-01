@@ -1,0 +1,461 @@
+/**
+  *	CSS level 3 
+  *	Styling for Tales.
+  */
+
+/*general body styling*/
+body
+{
+	font-family: 'Belleza', sans-serif;
+}
+
+.spaceText
+{
+	letter-spacing: 80px;
+}
+
+/* Forms */
+input[type=text],
+input[type=password],
+textarea 
+{
+	background: #fafafa;
+	/*-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);*/
+	box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+	border: 1px solid #ddd;
+	color: #888;
+}
+
+/*hyperlink style*/
+a
+{
+	text-decoration:none;
+	color:red;
+}
+
+.footer
+{
+	margin-top:10px;
+	text-align:center;
+}
+
+/***** styling for the index introduction page *****/
+
+/*header*/
+#header
+{
+	background-color:black;
+	width:100%;
+	height:100px;
+	position:absolute;
+	margin:0px auto;
+	
+	top:0px;
+	left:0px;
+}
+
+/*heading*/
+#title
+{
+	width: 700px;
+	height: 100px;	
+	margin: 0px auto;
+
+	text-align: center;
+	text-transform:capitalize;
+	color: red;
+	font-size:5em;	
+}
+
+/*contains all three images*/
+#typtichContainer
+{
+	width:700px;
+	height: 550px;
+	margin: 0px auto;
+	position:relative;
+	
+	text-align:center;
+	color:red;
+	font-weight:bold;
+	
+}
+
+#tryptich
+{
+	height:400px;
+	width:700px;
+	position:relative;
+	margin:0px auto;
+	
+	margin-top:125px;
+		
+	padding-left:35px;
+}
+
+/*storyteller*/
+#leftImage
+{
+	width:200px;
+	height: 400px;
+	position:relative;
+	
+	top:20px;
+	left:26px;
+	float:left;
+
+	font-size:2em;
+}
+
+/*user*/
+#centerImage
+{
+	width:200px;
+	height: 500px;
+	position:relative;
+	
+	float:left;
+	left:26px;
+	
+	margin-left:5px;
+	margin-right:5px;
+
+	font-size:2em;
+}
+
+/*about*/
+#rightImage
+{
+	width:200px;
+	height: 400px;
+	position:relative;
+	
+	top:20px;
+	float:left;
+	left:26px;
+	
+	font-size:2em;
+}
+
+/*sign up*/
+#register
+{
+	height:50px;
+	width:200px;
+	
+	position:relative;
+	border:1px solid red;
+	padding-top:2px;
+	
+	text-align:center;
+	color:red;
+	font-weight:bold;
+	font-size:2em;
+	
+	top:5px;
+
+	margin:0px auto;
+}
+
+/*****  Styling for the registrations form *****/
+
+#contentContainer
+{
+	position:relative;
+	height: auto;
+	width:auto;
+
+	border-bottom: 1px solid black;
+	
+	padding-bottom:10px;
+}
+
+.bodyReset
+{
+	font-family: 'Belleza', sans-serif;
+	background-color: white;
+}
+
+#content
+{
+	width:800px;
+	height:800px;
+	margin:0px auto;
+	position:relative;
+	
+	margin-top:100px;
+	/*need the leafy background */
+}
+
+#formData
+{
+	width:300px;
+	height:300px;
+	position:relative;
+	text-align:center;	
+	margin:0px auto;
+	
+	top:15%;
+}
+
+#errors
+{
+	width:250px;
+	height:auto;
+	position:absolute;
+	top:15%;
+	right:15%;
+	border:1px solid red;
+	background-color:white;
+	text-align:left;
+	padding:5px;
+	display:none;
+}
+
+.confirmationText
+{
+	text-align:center;
+	font-size: 2em;
+}
+
+/*****  Styling for the user page *****/
+#profilePicture
+{
+	width: 100px;
+	height: 100px;
+	border: 1px solid black;
+	float: left;
+	background-color:white;
+	margin-right:1px;
+}
+
+#navigation
+{	
+	border-bottom: 2px solid black;	
+	margin: 0px auto;
+	text-align:center;
+	padding-top:20px;
+	padding-right: 380px; /*this padding controlls the overflow of the navigation list */
+}
+
+#userNavigation
+{	
+	border-bottom: 2px solid black;	
+	margin: 0px auto;
+	text-align:center;
+	padding-top:20px;
+	padding-right: 290px; /*this padding controlls the overflow of the navigation list */
+}
+
+.navBar  > li
+{
+	position:relative;
+	display: inline;
+	vertical-align: top;
+	font-size: 2em;
+}
+
+.liFormat /* for navigation elements in createStory.php */
+{
+	word-spacing: 15em; /*15em*/
+}
+
+#sideBorder
+{
+	height: 100%;
+	width:1px;
+	border-right:1px solid black;
+	position:absolute;
+}
+
+.editable
+{
+	color: red;	
+}
+
+.items
+{
+	width:400px;
+	height:600px;
+	position:relative;
+	text-align:left;	
+	margin:0px auto;
+	padding-left:10px;
+	padding-right:10px;
+	padding-bottom: 15px;
+	margin-top:20px;
+	border:2px solid black;
+
+	overflow: auto;
+}
+#bio
+{
+	overflow: auto;
+}
+
+#dataBox /* NEST THIS UNDER CONTENT SO I CAN GET THE LEFT HAND BORDER*/
+{
+	width:800px;
+	/*height:auto;*/
+	border-left:2px solid black;
+	height:650px;
+}
+
+/*****  Styling for storyteller page *****/
+#itemNavigation
+{
+	/*padding-top:25px;*/
+	margin-top:29px;
+	padding-left:15px;
+	padding-bottom:5px;
+	padding-top:5px;
+	vertical-align: top;
+	list-style-type: none;
+	width: 84px;
+	color: red;
+	font-size: 1em;
+	
+	border-right: 1px dashed black;
+	border-bottom: 1px dashed black;	
+	border-top: 1px dashed black;
+	
+	position:fixed; /* so the menu follows the addition of new items */
+}
+
+.addItem:hover
+{
+	cursor:crosshair;
+}
+
+#mainContent
+{
+	width:800px;
+	border-left: 2px solid black;
+	height: 650px;
+	position:relative;
+}
+
+#storyForm
+{
+	/*border: 1px solid red;*/
+	height: 650px;
+	width: 500px;
+	overflow: auto;
+	position:absolute;
+	right:108px;
+	top:0;
+	text-align:justify;
+	padding-top:10px;
+	padding-left:20px;
+	display:none;
+}
+
+.formatTextbox > textarea /*for story creation form specifically to increase size of boxes*/
+{
+	width: 450px;
+	height: 120px;
+	margin-bottom:30px;
+}
+
+.formatPhotobox
+{
+	margin-bottom:30px;
+}
+
+/* styling for the saved page */
+
+#savedNavigation
+{	
+	border-bottom: 2px solid black;	
+	margin: 0px auto;
+	text-align:center;
+	padding-top:20px;
+	padding-right: 290px; /*this padding controlls the overflow of the navigation list */
+}
+
+#storyBrowser /*used to hold stories to browse through*/
+{
+	/*border: 1px solid red;*/
+	height: 600px;
+	width: 500px;
+	overflow: auto;
+	position:absolute;
+	right:108px;
+	top:0;
+	text-align:center;
+	padding-top:10px;
+	margin:0px auto;
+}
+
+.spacer /*shove the border under the picture*/
+{
+	height:30px;
+}
+
+/* styling for the table that displays available stories */
+table 
+{
+  border-collapse: collapse;
+  border: 1px solid #666666;
+  font: normal 11px verdana, arial, helvetica, sans-serif;
+  color: #363636;
+  background: #f6f6f6;
+  text-align:left;
+
+  margin:0px auto;
+}
+
+caption 
+{
+	text-align: center;
+	font: bold 16px arial, helvetica, sans-serif;
+	background: transparent;
+	padding:6px 4px 8px 0px;
+	color: black;
+	text-transform: uppercase;
+}
+
+thead, tfoot 
+{
+	background:url(images/tableBg.png) repeat-x;
+	text-align:left;
+	height:30px;
+	color:red;
+}
+
+thead th, tfoot th 
+{
+	padding:5px;
+}
+
+table a 
+{
+	color: #333333;
+	text-decoration:none;
+}
+
+table a:hover 
+{
+	text-decoration:underline;
+}
+
+tr.odd 
+{
+	background: #f1f1f1;
+}
+
+tbody th, tbody td 
+{
+	padding:5px;
+}
+
+/*styling for the about page*/
+#aboutNavigation
+{	
+	border-bottom: 2px solid black;	
+	margin: 0px auto;
+	text-align:center;
+	padding-top:20px;
+	padding-right: 100px; /*this padding controlls the overflow of the navigation list */
+}
