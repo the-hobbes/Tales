@@ -38,37 +38,13 @@ else
 /**
  * getStoryId()
  * function used to get the pk of the story you wish to edit.
- * the pk can be passed in two ways:
- * 	First, if the storyteller clicks on a story he has created in the createstory table, the pk is passed in via a GET variable called storyId
- *	Second, if the storyteller makes a change and submits the form, the form then sets a session variable that contains the pk of the story.
- * If neither of these are set, then the user is redirected to createstory.php
- * This function then calls a wrapper function to kick of the retrieval of the records from the database.
+ * this is retrieved from the POST variable passed into the page by the calling code in createStory.php
  */
 function getStoryId()
 {
-	//the id will be the pk of the story
-	if(isset($_SESSION['storyIdentifier']))
-	{
-		//if the session variable is set, then set the id equal to it
-		$id = $_SESSION['storyIdentifier'];
-		//unset session variable so the same session isn't repeated
-		unset($_SESSION['storyIdentifier']);
-	}
-	elseif($_GET["storyId"] > 0)
-	{
-		//otherwise if there is a value in the get variable storyId, set the id equal to it
-		$id = $_GET["storyId"];
-	}
-	else
-	{
-		//else redirect to the stories page
-		header('Location: createStory.php');
-	}
-	
+	$id = $_POST["storyId"];
 	return $id;
 }
-
-$id = getStoryId();
 
 /**
  * displayImage()
@@ -97,11 +73,11 @@ function displayImage($user)
 * retrieve records from the database.
 * Uses the passed in story id to retrieve all records specific to that story.
 * Then displays them, wrapping the editable regions in tags for jeditable and echoing them out to the page.
-* Arguments: the id of the story (the pk of the story in the database)
 */
-function retrieveRecords($id)
+function retrieveRecords()
 {
 	
+	$id = $_GET["storyId"];
 
 	//craft query for story table
 	$sqlStory = "SELECT fld_storyName FROM table_story WHERE pk_story_storyid = '$id'";
@@ -227,11 +203,11 @@ if (isset($_POST["imageSubmit"]))//image upload form submitted
 			//send sql statement to database
 			mysql_query($sql) or die ("Unable to update the record in the database " . mysql_error()); 
 
-			//set the session variable for use in the refresh
-			$_SESSION['storyIdentifier'] = $_POST["storyId"];
-
 			//refresh page so the user can see thier new photo
-			echo '<script type="text/javascript" charset="utf-8">location.reload(true)</script>';
+			//this is done using the POST variable containing the pk of the story
+			$id = getStoryId();
+			$redirectUrl = 'Location: editStory.php?storyId=' . $id;
+			header($redirectUrl);
 		}
 	}
 	else
@@ -331,7 +307,7 @@ if (isset($_POST["imageSubmit"]))//image upload form submitted
 						<div class="items" style="height:auto;">
 							<?php
 								//call the function to display the data from the database, formatted in editable regions. 
-								retrieveRecords($id); 
+								retrieveRecords(); 
 							?>
 						</div><!-- end items -->
 
