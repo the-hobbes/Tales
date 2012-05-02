@@ -7,12 +7,7 @@
 session_start(); //start the session
 
 //establish a connection to the database
-$connectId = mysql_connect("webdb.uvm.edu","pvendevi_admin","bj9GOhOOElyn6d3Z");
-if (!$connectId)
-  {
-  	die('Could not connect: ' . mysql_error());
-  }
-mysql_select_db("PVENDEVI_Tales", $connectId);
+include ("scripts/connect.php");
 
 //if the session variable is set, proceed
 if(isset($_SESSION['loggedIn']))
