@@ -141,7 +141,7 @@ if (isset($_POST["imageSubmit"]))//image upload form submitted
 	|| ($_FILES["userfile"]["type"] == "image/pjpeg")
 	&& ($_FILES['userfile']['size'] > 0))
 	{
-		echo "file is of appropriate type ";
+		//echo "file is of appropriate type ";
 		
 		//set variables from form
 		$fileName = $_FILES['userfile']['name'];
@@ -167,10 +167,7 @@ if (isset($_POST["imageSubmit"]))//image upload form submitted
 		}
 		//if the name is unique, load it to the directory and insert the path into the database
 		else
-		{
-			//resize temporary image
-			//resizeImage();
-			
+		{		
 			//upload file to directory
 			move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/" . $_FILES["userfile"]["name"]);
 
@@ -441,6 +438,7 @@ function userForm($user)
 				<!--***** Photo ID Part *****-->
 				<form action="'. $_SERVER["PHP_SELF"] .'" method="post"enctype="multipart/form-data">
 					<label class = "editable" for="file">Profile Picture:</label>
+					<br />
 					<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 					<input name="userfile" type="file" id="userfile"> 
 					<br />
@@ -509,6 +507,7 @@ function storytellerForm($user)
 				<!--***** Photo ID Part *****-->
 				<form action="'. $_SERVER["PHP_SELF"] .'" method="post"enctype="multipart/form-data">
 					<label class = "editable" for="file">Profile Picture:</label>
+					<br />
 					<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 					<input name="userfile" type="file" id="userfile"> 
 					<br />

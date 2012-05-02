@@ -36,6 +36,40 @@ else
 }
 
 /**
+ * getStoryId()
+ * function used to get the pk of the story you wish to edit.
+ * the pk can be passed in two ways:
+ * 	First, if the storyteller clicks on a story he has created in the createstory table, the pk is passed in via a GET variable called storyId
+ *	Second, if the storyteller makes a change and submits the form, the form then sets a session variable that contains the pk of the story.
+ * If neither of these are set, then the user is redirected to createstory.php
+ * This function then calls a wrapper function to kick of the retrieval of the records from the database.
+ */
+function getStoryId()
+{
+	//the id will be the pk of the story
+	if(isset($_SESSION['storyIdentifier']))
+	{
+		//if the session variable is set, then set the id equal to it
+		$id = $_SESSION['storyIdentifier'];
+	}
+	elseif($_GET["storyId"] > 0)
+	{
+		//otherwise if there is a value in the get variable storyId, set the id equal to it
+		$id = $_GET["storyId"];
+	}
+	else
+	{
+		//else redirect to the stories page
+		header('Location: createStory.php');
+	}
+
+	//must be called down in the html if the placement of the echos is to be correct
+	callRetrieveRecords($id);
+}
+
+getStoryId();
+
+/**
  * displayImage()
  * function to retrieve the profile image for display
  * takes in the logged on user as an argument
@@ -62,18 +96,18 @@ function displayImage($user)
 * retrieve records from the database.
 * Uses the passed in story id to retrieve all records specific to that story.
 * Then displays them, wrapping the editable regions in tags for jeditable and echoing them out to the page.
+* Arguments: the id of the story (the pk of the story in the database)
 */
-function retrieveRecords()
+function retrieveRecords($id)
 {
-	//get story id from page, as passed in
-	$id = $_GET["storyId"];
+	
 
 	//craft query for story table
 	$sqlStory = "SELECT fld_storyName FROM table_story WHERE pk_story_storyid = '$id'";
 	//craft query for the text table
 	$sqlText = "SELECT * FROM table_texts WHERE fk_story_storyid = '$id'";
 	//craft query for the photo table
-	$sqlPhoto = "SELECT fld_photos_photopath FROM table_photos WHERE fk_story_storyid = '$id'";
+	$sqlPhoto = "SELECT * FROM table_photos WHERE fk_story_storyid = '$id'";
 
 	//run and store queries against table contents
 	$storyResult = mysql_query($sqlStory) or die ("Unable to retrieve a storyResult from the database " . mysql_error());
@@ -84,30 +118,129 @@ function retrieveRecords()
 	$storyArray = mysql_fetch_array($storyResult);
 	$storyName = $storyArray[0];
 
-	//create string from storyarray, then print it wrapped in editable tags
-	$textString = "";
-	$textId = "";
-	while($row = mysql_fetch_array($textResult))
-	{
-		//$textId = $row['pk_texts_textid'];
-		//echo '<p><span class="editable">Text Block: </span><div id="'. "textBlock" . $textId .'" class ="edit_area">' . $row['fld_texts_textblock'] . '</div><!-- end firstName --></p>';
-		echo '<p><span class="editable">Text Block: </span><div id='. '"' . $row['pk_texts_textid'] . '"' . ' class ="edit_area">' . $row['fld_texts_textblock'] . '</div><!-- end firstName --></p>';
-	}
+	//call function to display text blocks found
+	if($textResult)
+		displayTexts($textResult);	
 
-	/*
-	//create string from photoResult, then print it wrapped in editable tags
-	$photoString = "";
-	while($row = mysql_fetch_array($photoResult))
-	{		
-		echo '<p><span class="editable">Photo File: </span><div id="firstName" class ="edit">' . $row['fld_photos_photopath'] . '</div><!-- end firstName --></p>';
-	}
-	*/
+	//call function to display photos that correspond to the story here
+	if($photoResult)
+		displayPhotos($photoResult);
+
 }
 
 /**
- * Handle form submission.
- * Perform the changes to the table as requested.
+ * displayTexts()
+ * function used to display each text block found in the story, wrapped in editable tags so it can be worked on by jeditable and updateTexts.php
+ * arguments: $textResult, the resulting array from the query
  */
+function displayTexts($textResult)
+{
+
+	while($row = mysql_fetch_array($textResult))
+	{
+		echo '<p><span class="editable">Text Block: </span><div id='. '"' . $row['pk_texts_textid'] . '"' . ' class ="edit_area">' . $row['fld_texts_textblock'] . '</div><!-- end firstName --></p>';
+	}
+}
+
+/**
+ * displayPhotos()
+ * function used to display each photo found in the database corresponding to the story.
+ * adds a form element and photograph for each found in database.
+ * submits to the page to perform the updates, one form for each photo
+ */
+function displayPhotos($photoResult)
+{
+	while($row = mysql_fetch_array($photoResult))
+	{
+		//note that the hidden text field here is used pass the pk of the photo into the _POST['photoId'] variable
+		//and the second is used to pass in the id of the story to which the photo belongs
+		echo '<div style="color:red; border:1px dashed black; margin-bottom:5px;">';
+		echo
+		'
+			<form action="'. $_SERVER["PHP_SELF"] .'" method="post"enctype="multipart/form-data">
+				<label class = "editable" for="file">New Photo:</label>
+				<br />
+				<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
+				<input name="userfile" type="file" id="userfile"> 
+				<br />
+				<input style="display:none;" type="text" name="photoId" value="'. $row['pk_photos_photoid'] .'"/>
+				<input style="display:none;" type="text" name="storyId" value="'. $row['fk_story_storyid'] .'"/>
+				<input type="submit" name="imageSubmit" value="Submit" />
+			</form>
+		';
+
+		echo '<p>Current Photo:</p>';
+		echo '<img height="100" width="100" src="'. $row['fld_photos_photopath'] .'">';
+		echo '</div>';
+	}
+}
+
+
+/**
+ * Handle form submission.
+ * Perform the changes to the table in the database as requested.
+ */
+if (isset($_POST["imageSubmit"]))//image upload form submitted
+{	
+	//check to see if the file is of the appropriate type, and is greater than 0 bytes
+	if (($_FILES["userfile"]["type"] == "image/gif") 
+	|| ($_FILES["userfile"]["type"] == "image/jpeg") 
+	|| ($_FILES["userfile"]["type"] == "image/pjpeg")
+	&& ($_FILES['userfile']['size'] > 0))
+	{
+		//set variables from form
+		$fileName = $_FILES['userfile']['name'];
+		$tmpName  = $_FILES['userfile']['tmp_name'];
+		$fileSize = $_FILES['userfile']['size'];
+		$fileType = $_FILES['userfile']['type'];
+		
+		//open file pointer and read the image content into a temporary variable
+		$fp      = fopen($tmpName, 'r');
+		$content = fread($fp, filesize($tmpName));
+		$content = addslashes($content);
+		fclose($fp);
+
+		//in order to reduce filename collisions, create a name for the file based on the current time
+		$time = gettimeofday(true);
+		$plainFilename = $fileName;
+		$newFileName = $time.$plainFilename;
+
+		//is the filename a duplicate
+		if (file_exists("uploads/storyPhotos/" . $newFileName))
+		{
+		    echo $newFileName . " already exists. ";
+		}
+		//if the name is unique, load it to the directory and insert the path into the database
+		else
+		{		
+			//upload file to directory
+			move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/storyPhotos/" . $newFileName);
+
+			/*NEED TO CREATE SQL SPECIFIC TO THE PHOTO TABLE AND THE PK OF THAT PHOTO, NOT THE USER TABLE*/
+
+			//create sql
+			$filePath = "uploads/storyPhotos/" . $newFileName;
+			$id = $_POST["photoId"];
+
+			$sql = "UPDATE table_photos SET fld_photos_photopath = '$filePath' WHERE pk_photos_photoid = '$id'";
+			//send sql statement to database
+			mysql_query($sql) or die ("Unable to update the record in the database " . mysql_error()); 
+
+			//echo '<img height="100" width="100" src="'. $filePath .'">';
+
+			//set the session variable for use in the refresh
+			$_SESSION['storyIdentifier'] = $_POST["storyId"];
+
+			//refresh page so the user can see thier new photo
+			echo '<script type="text/javascript" charset="utf-8">location.reload(true)</script>';
+
+		}
+	}
+	else
+	{
+		echo "file is not of appropriate type";
+	}
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -200,7 +333,10 @@ function retrieveRecords()
 						<div class="items" style="height:auto;">
 							<?php
 								//call the function to display the data from the database, formatted in editable regions. 
-								retrieveRecords(); 
+								function callRetrieveRecords($id)
+								{
+									retrieveRecords($id); 
+								}
 							?>
 						</div><!-- end items -->
 
