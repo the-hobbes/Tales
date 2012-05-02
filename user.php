@@ -154,25 +154,25 @@ if (isset($_POST["imageSubmit"]))//image upload form submitted
 		$content = fread($fp, filesize($tmpName));
 		$content = addslashes($content);
 		fclose($fp);
-		//if magic quotes
-		if(!get_magic_quotes_gpc())
-		{
-		    $fileName = addslashes($fileName);
-		}
+
+		//in order to reduce filename collisions, create a name for the file based on the current time
+		$time = gettimeofday(true);
+		$plainFilename = $fileName;
+		$newFileName = $time.$plainFilename;
 
 		//is the filename a duplicate
-		if (file_exists("uploads/" . $_FILES["userfile"]["name"]))
+		if (file_exists("uploads/" . $newFileName))
 		{
-		    echo $_FILES["userfile"]["name"] . " already exists. ";
+		    echo $newFileName . " already exists. ";
 		}
 		//if the name is unique, load it to the directory and insert the path into the database
 		else
 		{		
 			//upload file to directory
-			move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/" . $_FILES["userfile"]["name"]);
+			move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/" . $newFileName);
 
 			//create sql
-			$filePath = "uploads/" . $_FILES["userfile"]["name"];
+			$filePath = "uploads/" . $newFileName;
 			$query = "UPDATE table_user SET fld_user_photoid = '$filePath' WHERE pk_user_username = '$username'";
 			mysql_query($query) or die('Error, query failed: '. mysql_error());
 						
