@@ -2,7 +2,7 @@
 //*****^^^ This script performs the confirmation function and updates the database. ^^^*****//
 
 //establish a connection to the database
-include ("scripts/connect.php");
+include("scripts/connect.php");
 
 //get confirmationid from page
 $id = $_GET["confirmationId"]; 

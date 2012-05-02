@@ -5,7 +5,7 @@
     include ("validation_functions.php");
 
 	//establish a connection to the database
-	include ("scripts/connect.php");
+	include ("connect.php");
 	//get the id of the div you are passing in from jeditable
 	$id = $_POST["id"];
 	//echo $id . "\n";
