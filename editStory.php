@@ -51,6 +51,8 @@ function getStoryId()
 	{
 		//if the session variable is set, then set the id equal to it
 		$id = $_SESSION['storyIdentifier'];
+		//unset session variable so the same session isn't repeated
+		unset($_SESSION['storyIdentifier']);
 	}
 	elseif($_GET["storyId"] > 0)
 	{
@@ -62,12 +64,11 @@ function getStoryId()
 		//else redirect to the stories page
 		header('Location: createStory.php');
 	}
-
-	//must be called down in the html if the placement of the echos is to be correct
-	callRetrieveRecords($id);
+	
+	return $id;
 }
 
-getStoryId();
+$id = getStoryId();
 
 /**
  * displayImage()
@@ -226,14 +227,11 @@ if (isset($_POST["imageSubmit"]))//image upload form submitted
 			//send sql statement to database
 			mysql_query($sql) or die ("Unable to update the record in the database " . mysql_error()); 
 
-			//echo '<img height="100" width="100" src="'. $filePath .'">';
-
 			//set the session variable for use in the refresh
 			$_SESSION['storyIdentifier'] = $_POST["storyId"];
 
 			//refresh page so the user can see thier new photo
 			echo '<script type="text/javascript" charset="utf-8">location.reload(true)</script>';
-
 		}
 	}
 	else
@@ -333,10 +331,7 @@ if (isset($_POST["imageSubmit"]))//image upload form submitted
 						<div class="items" style="height:auto;">
 							<?php
 								//call the function to display the data from the database, formatted in editable regions. 
-								function callRetrieveRecords($id)
-								{
-									retrieveRecords($id); 
-								}
+								retrieveRecords($id); 
 							?>
 						</div><!-- end items -->
 
