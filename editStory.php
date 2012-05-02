@@ -156,6 +156,7 @@ function displayPhotos($photoResult)
 /**
  * Handle form submission.
  * Perform the changes to the table in the database as requested.
+ * Redirects the page to itself in order to refresh pictures.
  */
 if (isset($_POST["imageSubmit"]))//image upload form submitted
 {	
