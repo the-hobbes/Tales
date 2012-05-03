@@ -5,17 +5,13 @@
 	//if the data is valid, then the update is performed and the user sees the changes enacted. 
 	
 	session_start(); //continue the session
+
+	//establish a connection to the database
+	include ("connect.php");
+
 	$username = $_SESSION['username']; //get session username
 	
     include ("validation_functions.php");
-
-	//establish a connection to the server
-	$connectId = mysql_connect("webdb.uvm.edu","pvendevi_admin","bj9GOhOOElyn6d3Z");
-	if (!$connectId)
-	  {
-	  	die('Could not connect: ' . mysql_error());
-	  }
-	mysql_select_db("PVENDEVI_Tales", $connectId);
 
 	//get the id of the div you are passing in from jeditable
 	$id = $_POST["id"];

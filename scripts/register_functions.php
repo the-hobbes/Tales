@@ -2,12 +2,8 @@
 //*****^^^ This script is depricated. register.php contains all of this data. ^^^*****//
 
 
-$connectId = mysql_connect("webdb.uvm.edu","pvendevi_admin","bj9GOhOOElyn6d3Z");
-if (!$connectId)
-  {
-  	die('Could not connect: ' . mysql_error());
-  }
-mysql_select_db("PVENDEVI_Tales", $connectId);
+//establish a connection to the database
+include ("scripts/connect.php");
 
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 // initialize my global variables

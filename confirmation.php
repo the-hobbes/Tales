@@ -1,13 +1,8 @@
 <?php
 //*****^^^ This script performs the confirmation function and updates the database. ^^^*****//
 
-//establish a connection
-$connectId = mysql_connect("webdb.uvm.edu","pvendevi_admin","bj9GOhOOElyn6d3Z");
-if (!$connectId)
-  {
-  	die('Could not connect: ' . mysql_error());
-  }
-mysql_select_db("PVENDEVI_Tales", $connectId);
+//establish a connection to the database
+include("scripts/connect.php");
 
 //get confirmationid from page
 $id = $_GET["confirmationId"]; 

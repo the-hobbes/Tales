@@ -8,12 +8,8 @@ session_start(); //begin logon session
 //if the values are not, then an error div pops up informing the user of thier error
 //should be a link to reset password at the bottom of the page
 
-$connectId = mysql_connect("webdb.uvm.edu","pvendevi_admin","bj9GOhOOElyn6d3Z");
-if (!$connectId)
-  {
-  	die('Could not connect: ' . mysql_error());
-  }
-mysql_select_db("PVENDEVI_Tales", $connectId);
+//establish a connection to the database
+include ("scripts/connect.php");
 
 //global variables
 $username = "";

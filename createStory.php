@@ -11,12 +11,7 @@
 session_start(); //start the session
 
 //establish a connection to the database
-$connectId = mysql_connect("webdb.uvm.edu","pvendevi_admin","bj9GOhOOElyn6d3Z");
-if (!$connectId)
-  {
-  	die('Could not connect: ' . mysql_error());
-  }
-mysql_select_db("PVENDEVI_Tales", $connectId);
+include ("scripts/connect.php");
 
 //if the session variable is set, proceed
 if(isset($_SESSION['loggedIn']))
@@ -210,6 +205,28 @@ function validatePhotos($storyId, $username)
 		}	
 	}
 }
+
+/**
+ * if (isset($_POST["deleteStory"]))
+ * this handles when a request to delete a story is canceled.
+ * a request of this type is triggered by the delete button in the form.
+ * this form submission retrieves the pk of the deleted value, and used it to expunge the story and corresponding elements from all tables.
+ */
+if (isset($_POST["deleteStory"]))
+{
+	$storyId = $_POST["txtStoryId"];
+	//echo $storyId;
+
+	$storyRemovalSql = "DELETE FROM table_story WHERE pk_story_storyid = '$storyId'";
+	$photosRemoveSql = "DELETE FROM table_photos WHERE fk_story_storyid = '$storyId'";
+	$textsRemoveSql = "DELETE FROM table_texts WHERE fk_story_storyid = '$storyId'";
+
+	mysql_query($storyRemovalSql) or die('Error, story delete failed: '. mysql_error());
+	mysql_query($photosRemoveSql) or die('Error, photo delete failed: '. mysql_error());
+	mysql_query($textsRemoveSql) or die('Error, text delete failed: '. mysql_error());
+}
+
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -392,6 +409,8 @@ function validatePhotos($storyId, $username)
 							     */
 							    public function writeData()
 							    {
+							    	//set session variable containing story id
+							    	$_SESSION['storyId'] = $this->storyId;
 							    	//set root hyperlink
 							    	$this->hyperlink = "editStory.php?storyId=";
 							    	
@@ -399,6 +418,7 @@ function validatePhotos($storyId, $username)
 							    	$firstCell = "";
 							    	$secondCell = "";
 							    	$thirdCell = "";
+							    	$fourthCell ="";
 
 							    	//echo $this->rowNumber;
 							    	//echo $this->hyperlink;
@@ -413,20 +433,24 @@ function validatePhotos($storyId, $username)
 							    	$this->firstCell = '<td><a href="' . $this->hyperlink . $this->storyId . '">' . $this->storyId . '</a></td>';
 							    	$this->secondCell = '<td><a href="' . $this->hyperlink . $this->storyId . '">' . $this->authorName . '</a></td>';
 							    	$this->thirdCell = '<td><a href="' . $this->hyperlink . $this->storyId . '">' . $this->storyName . '</a></td>';
+							    	//$this->fourthCell = '<td><button class="cancelButton" type="button" onclick="alert('.deleteStory($this->storyId).')">Delete</button></td>';
+							    	$this->fourthCell = '
+							    							<td><form action="' . $_SERVER['PHP_SELF'] .'" method="post" enctype="multipart/form-data">
+							    								<input type="hidden" value="' .  $this->storyId .'" name="txtStoryId">
+							    								<input type="submit" value="Delete" name="deleteStory" />
+							    							</form></td>';
 
 							    	//append rows to row variable
 							    	$this->row .= $this->firstCell;
 							    	$this->row .= $this->secondCell;
 							    	$this->row .= $this->thirdCell;
+							    	$this->row .= $this->fourthCell;
 
 							    	//close row tag
 							    	$this->row .= "</tr>";
 
 							    	//return row variable to caller for printing
 							    	return $this->row;
-
-							    	//return $this->rowNumber % 2;
-							    	//return $this->rowNumber;
 							    }
 						    }
 
@@ -466,6 +490,7 @@ function validatePhotos($storyId, $username)
 											<th scope="col">Story ID</th>
 											<th scope="col">Author Name</th>
 											<th scope="col">Story Name</th>
+											<th scope="col">Delete Story</th>
 										</tr><!-- End column headers -->
 									</thead><!-- end header -->
 
@@ -473,7 +498,7 @@ function validatePhotos($storyId, $username)
 										<tr>
 											<!--<th scope="row">Footer</th>-->
 											<!--<td colspan="2">Footer Data</td>-->
-											<td colspan="3"></td>
+											<td colspan="4"></td>
 										</tr><!-- end column footers -->
 									</tfoot><!-- end footer -->
 

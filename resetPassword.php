@@ -1,13 +1,8 @@
 <?php
 //*****^^^ This form sends an email message to the user containing a temporary random password. ^^^*****//
 
-//establish a connection
-$connectId = mysql_connect("webdb.uvm.edu","pvendevi_admin","bj9GOhOOElyn6d3Z");
-if (!$connectId)
-  {
-  	die('Could not connect: ' . mysql_error());
-  }
-mysql_select_db("PVENDEVI_Tales", $connectId);
+//establish a connection to the database
+include ("scripts/connect.php");
 
 /**
  * if the form is submitted, do the following:
