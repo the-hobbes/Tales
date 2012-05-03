@@ -459,3 +459,9 @@ tbody th, tbody td
 	padding-top:20px;
 	padding-right: 100px; /*this padding controlls the overflow of the navigation list */
 }
+
+/* cancel button */
+.cancelButton
+{
+	font-size: 75%;
+}

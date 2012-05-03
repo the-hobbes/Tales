@@ -189,8 +189,6 @@ if (isset($_POST["imageSubmit"]))//image upload form submitted
 			//upload file to directory
 			move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/storyPhotos/" . $newFileName);
 
-			/*NEED TO CREATE SQL SPECIFIC TO THE PHOTO TABLE AND THE PK OF THAT PHOTO, NOT THE USER TABLE*/
-
 			//create sql
 			$filePath = "uploads/storyPhotos/" . $newFileName;
 			$id = $_POST["photoId"];
