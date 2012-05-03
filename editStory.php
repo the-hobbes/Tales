@@ -142,7 +142,7 @@ function displayPhotos($photoResult)
 		';
 
 		echo '<p>Current Photo:</p>';
-		echo '<img height="100" width="100" src="'. $row['fld_photos_photopath'] .'">';
+		echo '<img height="200" width="200" src="'. $row['fld_photos_photopath'] .'">';
 		echo '</div>';
 	}
 }
